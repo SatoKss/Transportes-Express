@@ -32,7 +32,7 @@ if (!$result) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3ig7ol3_lH3JJ985YRMplblfWMFCvAqI&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
 
 
   <!-- Tus estilos y script -->

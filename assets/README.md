@@ -45,6 +45,12 @@ $user = "root"; // Usuario por defecto en XAMPP
 $pass = ""; // Sin contraseña por defecto
 $db = "transportes";
 
+Configurar la API Key de Google Maps en public/index.php:
+
+<script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&libraries=places"></script>
+
+Nota: Reemplazar TU_API_KEY con una API Key válida de Google Maps.
+
 5️⃣ Instalar Dependencias
 
 Si Composer no está instalado, descárgalo desde getcomposer.org e instálalo.
@@ -62,7 +68,7 @@ Abrir el navegador e ingresar la siguiente URL:
 
 http://localhost/transportes/public/index.php
 
-📌 Funcionalidades Implementadas
+ Funcionalidades Implementadas
 
 ✅ Gestión de Viajes (CRUD): Crear, editar y eliminar viajes con AJAX.
 ✅ Visualización de Rutas: Mapa interactivo con Google Maps API.
@@ -71,7 +77,7 @@ http://localhost/transportes/public/index.php
 ✅ Exportación a Google Sheets: Datos en tiempo real con formato condicional.
 ✅ Interfaz Mejorada: Diseño responsivo con Bootstrap.
 
-🔍 ¿Por qué estas funcionalidades?
+ ¿Por qué estas funcionalidades?
 
 AJAX: Para mejorar la experiencia sin recargar la página.
 
@@ -80,4 +86,6 @@ Google Maps API: Para mostrar rutas en tiempo real.
 Google Sheets API: Para exportar reportes y analizarlos externamente.
 
 Filtros avanzados: Para una búsqueda eficiente dentro de los registros.
+
+
 
