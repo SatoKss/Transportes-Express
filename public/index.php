@@ -30,7 +30,7 @@ if (!$result) {
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY_AQUI&libraries=places"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=TU_KEY_AQUI&libraries=places"></script>
 
 
 
@@ -198,11 +198,17 @@ if (!$result) {
             <div class="mb-3">
               <label for="origen_comuna" class="form-label">Origen</label>
               <input type="text" class="form-control" id="origen_comuna" name="origen_comuna" required>
+              <span id="origenError" class="text-danger" style="display:none;"></span>
             </div>
+
             <div class="mb-3">
               <label for="destino_comuna" class="form-label">Destino</label>
               <input type="text" class="form-control" id="destino_comuna" name="destino_comuna" required>
+              <span id="destinoError" class="text-danger" style="display:none;"></span>
             </div>
+
+
+
             <div class="mb-3">
               <label for="usuario_ejecutivo" class="form-label">Ejecutivo</label>
               <input type="text" class="form-control" id="usuario_ejecutivo" name="usuario_ejecutivo" required>

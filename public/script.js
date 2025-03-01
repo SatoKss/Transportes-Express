@@ -61,89 +61,117 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-$("#viajeForm").submit(function (e) {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+    $("#viajeForm").off("submit").on("submit", function (e) {
+        e.preventDefault();
 
-    let fecha = $("#fecha_viaje").val().trim();
-    let origen = $("#origen_comuna").val().trim();
-    let destino = $("#destino_comuna").val().trim();
-    let ejecutivo = $("#usuario_ejecutivo").val().trim();
-    let solicitante = $("#usuario_solicitante").val().trim();
-    let valor = $("#valor").val().trim();
+        let fecha = $("#fecha_viaje").val().trim();
+        let origen = $("#origen_comuna").val().trim();
+        let destino = $("#destino_comuna").val().trim();
+        let ejecutivo = $("#usuario_ejecutivo").val().trim();
+        let solicitante = $("#usuario_solicitante").val().trim();
+        let valor = $("#valor").val().trim();
 
-    $("#origenError").hide().text("");
-    $("#destinoError").hide().text("");
+        // Ocultar errores previos
+        $("#origenError").hide().text("");
+        $("#destinoError").hide().text("");
 
-    if (!fecha || !origen || !destino || !ejecutivo || !solicitante || !valor) {
-        alert("⚠️ Todos los campos son obligatorios.");
-        return;
-    }
+        console.log("Validando formulario...");
 
-    if (!/^\d+$/.test(valor)) {
-        alert("⚠️ El valor (CLP) debe ser un número sin puntos ni caracteres especiales.");
-        return;
-    }
-
-    validarDireccion(origen, function (origenValido) {
-        if (!origenValido) {
-            $("#origenError").text("⚠️ La dirección de origen no es válida. Ingrese una dirección real.").show();
+        if (!fecha || !origen || !destino || !ejecutivo || !solicitante || !valor) {
+            alert("⚠️ Todos los campos son obligatorios.");
             return;
         }
 
-        validarDireccion(destino, function (destinoValido) {
-            if (!destinoValido) {
-                $("#destinoError").text("⚠️ La dirección de destino no es válida. Ingrese una dirección real.").show();
+        if (!/^\d+$/.test(valor)) {
+            alert("⚠️ El valor (CLP) debe ser un número sin puntos ni caracteres especiales.");
+            return;
+        }
+
+        // Validar direcciones antes de enviar el formulario
+        validarDireccion(origen, function (origenValido) {
+            if (!origenValido) {
+                console.warn("❌ Dirección de origen inválida:", origen);
+                $("#origenError").text("⚠️ La dirección de origen no es válida. Ingrese una dirección real.").show();
                 return;
             }
 
-            let id = $("#viajeId").val();
-            let url = id ? "../src/update_viaje.php" : "../src/add_viaje.php";
-            let data = $("#viajeForm").serialize();
-
-            $.post(url, data, function (response) {
-                console.log("✔ Respuesta del servidor:", response);
-
-                let modalElement = document.getElementById("viajeModal");
-                let modalInstance = bootstrap.Modal.getInstance(modalElement);
-                if (modalInstance) {
-                    modalInstance.hide();
+            validarDireccion(destino, function (destinoValido) {
+                if (!destinoValido) {
+                    console.warn("❌ Dirección de destino inválida:", destino);
+                    $("#destinoError").text("⚠️ La dirección de destino no es válida. Ingrese una dirección real.").show();
+                    return;
                 }
 
-                let successModalEl = document.getElementById("successModal");
-                let successModalTitle = document.getElementById("successModalTitle");
-                let successModalMsg = document.getElementById("successModalMsg");
-                let successModal = new bootstrap.Modal(successModalEl);
-
-                successModalTitle.textContent = id ? "Viaje Editado" : "Viaje Agregado";
-                successModalMsg.textContent = id ? "El viaje se ha editado con éxito." : "El viaje se ha agregado con éxito.";
-
-                successModal.show();
-
-                actualizarTabla();
-            }).fail(function (xhr) {
-                console.error("❌ Error en la petición AJAX:", xhr.responseText);
-
-            }).fail(function (xhr) {
-                console.error("❌ Error en la petición AJAX:", xhr.responseText);
+                console.log("✅ Direcciones válidas. Enviando formulario...");
+                enviarFormulario();
             });
         });
     });
+
+    function validarDireccion(direccion, callback) {
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ address: direccion + ", Chile" }, function (results, status) {
+            if (status === "OK" && results.length > 0) {
+                let result = results[0];
+                let formattedAddress = result.formatted_address.toLowerCase();
+                let inputAddress = direccion.toLowerCase();
+
+                let validTypes = ["locality", "route", "sublocality", "street_address"];
+                let isValidType = result.types.some(type => validTypes.includes(type));
+
+                console.log("🔍 Verificando dirección:", inputAddress, "=>", formattedAddress);
+
+                if (!isValidType || !formattedAddress.includes(inputAddress)) {
+                    console.warn("❌ Dirección no coincide:", formattedAddress);
+                    callback(false);
+                } else {
+                    console.log("✅ Dirección válida:", formattedAddress);
+                    callback(true);
+                }
+            } else {
+                console.warn(`❌ Dirección no válida: ${direccion}`);
+                callback(false);
+            }
+        });
+    }
+
+    function enviarFormulario() {
+        let id = $("#viajeId").val();
+        let url = id ? "../src/update_viaje.php" : "../src/add_viaje.php";
+        let data = $("#viajeForm").serialize();
+
+        console.log("📤 Enviando datos al servidor...", data);
+
+        $.post(url, data, function (response) {
+            console.log("✔ Respuesta del servidor:", response);
+
+            let modalElement = document.getElementById("viajeModal");
+            let modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+
+            let successModalEl = document.getElementById("successModal");
+            let successModalTitle = document.getElementById("successModalTitle");
+            let successModalMsg = document.getElementById("successModalMsg");
+            let successModal = new bootstrap.Modal(successModalEl);
+
+            successModalTitle.textContent = id ? "Viaje Editado" : "Viaje Agregado";
+            successModalMsg.textContent = id ? "El viaje se ha editado con éxito." : "El viaje se ha agregado con éxito.";
+
+            successModal.show();
+
+            actualizarTabla();
+        }).fail(function (xhr) {
+            console.error("❌ Error en la petición AJAX:", xhr.responseText);
+        });
+    }
 });
 
 
 
-function validarDireccion(comuna, callback) {
-    let geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ address: comuna + ", Chile" }, function (results, status) {
-        if (status === "OK") {
-            callback(true);
-        } else {
-            console.warn(`Dirección no válida: ${comuna}`);
-            callback(false);
-        }
-    });
-}
 
 
 
@@ -260,7 +288,7 @@ function verMapaDetalle(origen, destino) {
 
     let map = new google.maps.Map(mapElement, {
         zoom: 12,
-        center: { lat: -33.4489, lng: -70.6693 }, 
+        center: { lat: -33.4489, lng: -70.6693 }, // Santiago, Chile
     });
 
     let directionsService = new google.maps.DirectionsService();

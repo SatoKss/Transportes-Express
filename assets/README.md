@@ -1,57 +1,47 @@
-Guía para Probar la Página Web
 
-Este proyecto es un Panel de Administración de Viajes que permite gestionar registros de viajes, visualizar rutas en Google Maps, generar reportes SQL y exportarlos a Google Sheets. A continuación, se detallan los pasos para probar la aplicación correctamente.
+Crear un nuevo proyecto o seleccionar uno existente.
 
-Pasos para Probar la Aplicación
+Ir a APIs y Servicios > Biblioteca y habilitar:
 
-1️⃣ Instalar XAMPP (Si no está instalado)
+Maps JavaScript API
 
-Si XAMPP no está instalado, descárgalo desde apachefriends.org e instálalo.
+Geocoding API
 
-2️⃣ Clonar el Repositorio en la Carpeta Correcta
+Directions API
 
-Abrir la consola de comandos (CMD) en Windows.
+Service Usage API
 
-Navegar a la carpeta htdocs de XAMPP:
+Ir a la sección de Credenciales y generar una nueva API Key.
 
-cd C:/xampp/htdocs/
-
-Clonar el repositorio dentro de htdocs:
-
-git clone https://github.com/tu-usuario/proyecto-viajes.git transportes
-
-3️⃣ Configurar la Base de Datos en phpMyAdmin con XAMPP
-
-Iniciar XAMPP y asegurarse de que Apache y MySQL estén corriendo.
-
-Abrir phpMyAdmin desde http://localhost/phpmyadmin/.
-
-Crear una nueva base de datos llamada transportes.
-
-Importar el archivo transportes.sql:
-
-Ir a la pestaña Importar en phpMyAdmin.
-
-Seleccionar el archivo transportes.sql.
-
-Hacer clic en Ejecutar para cargar los datos.
-
-4️⃣ Configurar el Proyecto
-
-En src/db.php, actualizar los datos de conexión a la base de datos si es necesario:
-
-$host = "localhost";
-$user = "root"; // Usuario por defecto en XAMPP
-$pass = ""; // Sin contraseña por defecto
-$db = "transportes";
-
-Configurar la API Key de Google Maps en public/index.php:
+Copiar la API Key y agregarla en public/index.php:
 
 <script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&libraries=places"></script>
 
-Nota: Reemplazar TU_API_KEY con una API Key válida de Google Maps.
+Nota: Reemplazar TU_API_KEY con la API Key generada.
 
-5️⃣ Instalar Dependencias
+Obtener las Credenciales de Google Sheets y Configurar la API
+
+Ir a Google Cloud Console.
+
+Crear un nuevo proyecto o seleccionar uno existente.
+
+Ir a APIs y Servicios > Biblioteca y habilitar:
+
+Google Sheets API
+
+Google Drive API
+
+Ir a la sección de Credenciales y generar una cuenta de servicio.
+
+Descargar el archivo JSON de credenciales y guardarlo en config/
+
+Renombra el archivo JSON asi credenciales.json.
+
+Compartir el acceso a la hoja de Google Sheets con el correo de la cuenta de servicio.
+
+
+
+5 Instalar Dependencias
 
 Si Composer no está instalado, descárgalo desde getcomposer.org e instálalo.
 
@@ -60,7 +50,7 @@ Luego, abrir la consola de comandos (CMD), navegar a la carpeta del proyecto y e
 cd C:/xampp/htdocs/transportes
 composer install
 
-6️⃣ Acceder a la Aplicación en el Navegador
+6️ Acceder a la Aplicación en el Navegador
 
 Abrir XAMPP y asegurarse de que Apache y MySQL estén corriendo.
 
@@ -70,12 +60,12 @@ http://localhost/transportes/public/index.php
 
  Funcionalidades Implementadas
 
-✅ Gestión de Viajes (CRUD): Crear, editar y eliminar viajes con AJAX.
-✅ Visualización de Rutas: Mapa interactivo con Google Maps API.
-✅ Filtros Avanzados: Buscar por ejecutivo, fecha y comuna.
-✅ Reportes SQL Dinámicos: Generación de informes en la interfaz.
-✅ Exportación a Google Sheets: Datos en tiempo real con formato condicional.
-✅ Interfaz Mejorada: Diseño responsivo con Bootstrap.
+ Gestión de Viajes (CRUD): Crear, editar y eliminar viajes con AJAX.
+ Visualización de Rutas: Mapa interactivo con Google Maps API.
+ Filtros Avanzados: Buscar por ejecutivo, fecha y comuna.
+ Reportes SQL Dinámicos: Generación de informes en la interfaz.
+ Exportación a Google Sheets: Datos en tiempo real con formato condicional.
+ Interfaz Mejorada: Diseño responsivo con Bootstrap.
 
  ¿Por qué estas funcionalidades?
 
@@ -86,6 +76,3 @@ Google Maps API: Para mostrar rutas en tiempo real.
 Google Sheets API: Para exportar reportes y analizarlos externamente.
 
 Filtros avanzados: Para una búsqueda eficiente dentro de los registros.
-
-
-
