@@ -2,13 +2,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include '../src/db.php'; // Conectar a la base de datos
+include '../src/db.php';
 
 if (!$conn) {
     die("Error de conexión: " . mysqli_connect_error());
 }
 
-// Verificar si se recibió el parámetro 'reporte' en la URL
 $reporte = isset($_GET['reporte']) ? $_GET['reporte'] : '';
 
 switch ($reporte) {
@@ -28,23 +27,19 @@ switch ($reporte) {
                 AND fecha_viaje BETWEEN '2025-01-15' AND '2025-02-15'";
         break;
     default:
-        die(json_encode(["error" => "Consulta no válida."])); // Respuesta en JSON
+        die(json_encode(["error" => "Consulta no válida."]));
 }
 
-// Ejecutar la consulta
 $result = $conn->query($sql);
 
 if (!$result) {
-    die(json_encode(["error" => "Error en la consulta SQL: " . $conn->error])); // Respuesta en JSON
+    die(json_encode(["error" => "Error en la consulta SQL: " . $conn->error]));
 }
 
-// Convertir los datos en un array
 $datos = [];
 while ($row = $result->fetch_assoc()) {
     $datos[] = $row;
 }
 
-// Mostrar el resultado en JSON
 header('Content-Type: application/json');
 echo json_encode($datos, JSON_PRETTY_PRINT);
-?>

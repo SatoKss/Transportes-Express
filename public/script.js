@@ -1,11 +1,9 @@
-const API_KEY = "51e04af1-85c6-4335-baa2-3dcfa2def492";
 
 let map;
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ Script cargado correctamente.");
 
-    // Validación de valores solo numéricos
     $("#valor").on("input", function () {
         let valorInput = $(this).val();
 
@@ -17,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Función de filtrado
     window.filterTable = function () {
         let searchEjecutivo = $("#searchEjecutivo").val().toLowerCase();
         let startDate = $("#startDate").val();
@@ -39,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
 
-    // Función para restablecer los filtros y mostrar todos los registros
     window.resetFilters = function () {
         $("#searchEjecutivo").val("");
         $("#startDate").val("");
@@ -47,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
         $("table tbody tr").show();
     };
 
-    // Evento para corregir el formato del valor en el modal de detalles
     $("#detalleModal").on("show.bs.modal", function (event) {
         let button = $(event.relatedTarget);
         let valor = button.data("bs-valor");
@@ -56,18 +51,16 @@ document.addEventListener("DOMContentLoaded", function () {
         $("#detalleValor").text(formattedValor + " CLP");
     });
 
-    // Aplicar color rojo a valores inferiores a 20.000
     $("table tbody tr").each(function () {
         let row = $(this);
         let valor = parseInt(row.find("td:eq(6)").text().replace(/\./g, ""));
-        
+
         if (valor < 20000) {
             row.find("td:eq(6)").css("color", "red");
         }
     });
 });
 
-// Validación al enviar el formulario
 $("#viajeForm").submit(function (e) {
     e.preventDefault();
 
@@ -78,37 +71,31 @@ $("#viajeForm").submit(function (e) {
     let solicitante = $("#usuario_solicitante").val().trim();
     let valor = $("#valor").val().trim();
 
-    // Limpiar mensajes de error previos
     $("#origenError").hide().text("");
     $("#destinoError").hide().text("");
 
-    // Validación: Todos los campos deben estar rellenos
     if (!fecha || !origen || !destino || !ejecutivo || !solicitante || !valor) {
         alert("⚠️ Todos los campos son obligatorios.");
         return;
     }
 
-    // Validación: El valor debe ser solo números sin puntos ni comas
     if (!/^\d+$/.test(valor)) {
         alert("⚠️ El valor (CLP) debe ser un número sin puntos ni caracteres especiales.");
         return;
     }
 
-    // Validar Origen
     validarDireccion(origen, function (origenValido) {
         if (!origenValido) {
             $("#origenError").text("⚠️ La dirección de origen no es válida. Ingrese una dirección real.").show();
             return;
         }
 
-        // Validar Destino
         validarDireccion(destino, function (destinoValido) {
             if (!destinoValido) {
                 $("#destinoError").text("⚠️ La dirección de destino no es válida. Ingrese una dirección real.").show();
                 return;
             }
 
-            // Si ambas direcciones son válidas, recién enviamos el formulario
             let id = $("#viajeId").val();
             let url = id ? "../src/update_viaje.php" : "../src/add_viaje.php";
             let data = $("#viajeForm").serialize();
@@ -133,9 +120,9 @@ $("#viajeForm").submit(function (e) {
                 successModal.show();
 
                 actualizarTabla();
-    }).fail(function (xhr) {
-        console.error("❌ Error en la petición AJAX:", xhr.responseText);
-    
+            }).fail(function (xhr) {
+                console.error("❌ Error en la petición AJAX:", xhr.responseText);
+
             }).fail(function (xhr) {
                 console.error("❌ Error en la petición AJAX:", xhr.responseText);
             });
@@ -159,94 +146,73 @@ function validarDireccion(comuna, callback) {
 }
 
 
-    
 
-    //--------------------------------------------------
-    // 2. Modal Agregar/Editar Viaje (show.bs.modal)
-    //--------------------------------------------------
-    const viajeModal = document.getElementById("viajeModal");
-    viajeModal.addEventListener("show.bs.modal", event => {
-        const button = event.relatedTarget;
-        if (!button) return;
 
-        // Obtenemos datos de los atributos data-bs-*
-        const id         = button.getAttribute("data-bs-id");
-        const fecha      = button.getAttribute("data-bs-fecha");
-        const origen     = button.getAttribute("data-bs-origen");
-        const destino    = button.getAttribute("data-bs-destino");
-        const ejecutivo  = button.getAttribute("data-bs-ejecutivo");
-        const solicitante= button.getAttribute("data-bs-solicitante");
-        const valor      = button.getAttribute("data-bs-valor");
+const viajeModal = document.getElementById("viajeModal");
+viajeModal.addEventListener("show.bs.modal", event => {
+    const button = event.relatedTarget;
+    if (!button) return;
 
-        // Cambiamos el título del modal
-        document.getElementById("modalTitle").textContent = id ? "Editar Viaje" : "Agregar Viaje";
+    const id = button.getAttribute("data-bs-id");
+    const fecha = button.getAttribute("data-bs-fecha");
+    const origen = button.getAttribute("data-bs-origen");
+    const destino = button.getAttribute("data-bs-destino");
+    const ejecutivo = button.getAttribute("data-bs-ejecutivo");
+    const solicitante = button.getAttribute("data-bs-solicitante");
+    const valor = button.getAttribute("data-bs-valor");
 
-        // Rellenamos o limpiamos campos
-        document.getElementById("viajeId").value          = id         || "";
-        document.getElementById("fecha_viaje").value      = fecha      || "";
-        document.getElementById("origen_comuna").value    = origen     || "";
-        document.getElementById("destino_comuna").value   = destino    || "";
-        document.getElementById("usuario_ejecutivo").value= ejecutivo  || "";
-        document.getElementById("usuario_solicitante").value = solicitante || "";
-        document.getElementById("valor").value            = valor      || "";
-    });
+    document.getElementById("modalTitle").textContent = id ? "Editar Viaje" : "Agregar Viaje";
 
-    //--------------------------------------------------
-    // 3. Modal Detalle (show.bs.modal) => Mapa + Ruta
-    //--------------------------------------------------
-    const detalleModal = document.getElementById("detalleModal");
-    detalleModal.addEventListener("show.bs.modal", event => {
-        const button = event.relatedTarget;
-        if (!button) return;
+    document.getElementById("viajeId").value = id || "";
+    document.getElementById("fecha_viaje").value = fecha || "";
+    document.getElementById("origen_comuna").value = origen || "";
+    document.getElementById("destino_comuna").value = destino || "";
+    document.getElementById("usuario_ejecutivo").value = ejecutivo || "";
+    document.getElementById("usuario_solicitante").value = solicitante || "";
+    document.getElementById("valor").value = valor || "";
+});
 
-        // Obtenemos datos del viaje
-        const fecha      = button.getAttribute("data-bs-fecha");
-        const origen     = button.getAttribute("data-bs-origen");
-        const destino    = button.getAttribute("data-bs-destino");
-        const ejecutivo  = button.getAttribute("data-bs-ejecutivo");
-        const solicitante= button.getAttribute("data-bs-solicitante");
-        const valor      = button.getAttribute("data-bs-valor");
+const detalleModal = document.getElementById("detalleModal");
+detalleModal.addEventListener("show.bs.modal", event => {
+    const button = event.relatedTarget;
+    if (!button) return;
 
-        // Mostramos la info en el modal
-        document.getElementById("detalleFecha").textContent      = fecha;
-        document.getElementById("detalleOrigen").textContent     = origen;
-        document.getElementById("detalleDestino").textContent    = destino;
-        document.getElementById("detalleEjecutivo").textContent  = ejecutivo;
-        document.getElementById("detalleSolicitante").textContent= solicitante;
-        document.getElementById("detalleValor").textContent      = valor;
+    const fecha = button.getAttribute("data-bs-fecha");
+    const origen = button.getAttribute("data-bs-origen");
+    const destino = button.getAttribute("data-bs-destino");
+    const ejecutivo = button.getAttribute("data-bs-ejecutivo");
+    const solicitante = button.getAttribute("data-bs-solicitante");
+    const valor = button.getAttribute("data-bs-valor");
 
-        // Llamamos a la función que muestra el mapa y traza la ruta
-        verMapaDetalle(origen, destino);
-    });
+    document.getElementById("detalleFecha").textContent = fecha;
+    document.getElementById("detalleOrigen").textContent = origen;
+    document.getElementById("detalleDestino").textContent = destino;
+    document.getElementById("detalleEjecutivo").textContent = ejecutivo;
+    document.getElementById("detalleSolicitante").textContent = solicitante;
+    document.getElementById("detalleValor").textContent = valor;
 
-    $('#detalleModal').on('shown.bs.modal', function () {
+    verMapaDetalle(origen, destino);
+});
+
+$('#detalleModal').on('shown.bs.modal', function () {
     console.log("🔄 Ajustando tamaño del mapa...");
 
-    // Ajustar altura del contenedor del mapa
-    $("#mapDetalle").css("height", "60vh"); 
-
-    // Redibujar el mapa para ajustarlo al nuevo tamaño
+    $("#mapDetalle").css("height", "60vh");
     google.maps.event.trigger(map, "resize");
 });
 
-    
-
-    //--------------------------------------------------
-    // 4. Modal Confirmar Eliminación
-    //--------------------------------------------------
-    const confirmDeleteModal = document.getElementById("confirmDeleteModal");
-    confirmDeleteModal.addEventListener("show.bs.modal", event => {
-        const button = event.relatedTarget;
-        if (button) {
-            document.getElementById("deleteViajeId").value = button.getAttribute("data-bs-id");
-        }
-    });
 
 
 
-//--------------------------------------------------
-// 5. Función para Confirmar Eliminación
-//--------------------------------------------------
+const confirmDeleteModal = document.getElementById("confirmDeleteModal");
+confirmDeleteModal.addEventListener("show.bs.modal", event => {
+    const button = event.relatedTarget;
+    if (button) {
+        document.getElementById("deleteViajeId").value = button.getAttribute("data-bs-id");
+    }
+});
+
+
 function confirmarEliminar() {
     let id = document.getElementById("deleteViajeId").value;
     console.log("🗑 Eliminando viaje con ID:", id);
@@ -269,7 +235,6 @@ function confirmarEliminar() {
         successModalMsg.textContent = "El viaje se ha eliminado con éxito.";
         successModal.show();
 
-        // 🔄 Actualizar la tabla sin recargar la página
         actualizarTabla();
     }).fail(function (xhr) {
         console.error("❌ Error al eliminar el viaje:", xhr.responseText);
@@ -278,21 +243,24 @@ function confirmarEliminar() {
 
 
 
-//--------------------------------------------------
-// 6. Funciones para Mapa + Ruta (Leaflet + GraphHopper)
-//--------------------------------------------------
-// Asegúrate de tener una variable global 'map'
+
 
 
 function verMapaDetalle(origen, destino) {
     let mapElement = document.getElementById("mapDetalle");
 
-    // Asegurar que el mapa tenga suficiente altura antes de inicializarlo
+    if (!mapElement) {
+        console.error("❌ Error: El elemento #mapDetalle no existe.");
+        return;
+    }
+
+    console.log("🗺️ Creando mapa en #mapDetalle...");
+
     mapElement.style.height = "400px";
 
     let map = new google.maps.Map(mapElement, {
         zoom: 12,
-        center: { lat: -33.4489, lng: -70.6693 }, // Santiago
+        center: { lat: -33.4489, lng: -70.6693 }, 
     });
 
     let directionsService = new google.maps.DirectionsService();
@@ -324,26 +292,23 @@ function verMapaDetalle(origen, destino) {
 
 
 
-// Recargar la página al cerrar el modal de éxito
+
 function reloadPage() {
     location.reload();
 }
 
 
-// Función para formatear el valor en CLP con punto como separador de miles
 function formatCurrency(value) {
     return new Intl.NumberFormat('es-CL').format(value);
 }
 
-// Modifica la parte donde se llena el modal con los detalles del viaje
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var detalleModal = document.getElementById("detalleModal");
 
-    detalleModal.addEventListener("show.bs.modal", function(event) {
+    detalleModal.addEventListener("show.bs.modal", function (event) {
         var button = event.relatedTarget; // Botón que activó el modal
         var valor = button.getAttribute("data-bs-valor");
 
-        // Formatear el valor antes de insertarlo en el modal
         document.getElementById("detalleValor").innerText = formatCurrency(valor) + " CLP";
     });
 });
@@ -357,17 +322,15 @@ function filterTable() {
     let rows = table.getElementsByTagName("tr");
 
     for (let row of rows) {
-        let ejecutivo = row.cells[4].textContent.toLowerCase(); // Columna Ejecutivo
-        let fecha = row.cells[1].textContent; // Columna Fecha
+        let ejecutivo = row.cells[4].textContent.toLowerCase();
+        let fecha = row.cells[1].textContent;
 
         let showRow = true;
 
-        // Filtrar por ejecutivo si hay texto ingresado
         if (ejecutivoText && !ejecutivo.includes(ejecutivoText)) {
             showRow = false;
         }
 
-        // Filtrar por rango de fechas si se ha seleccionado
         if (startDate && endDate) {
             if (fecha < startDate || fecha > endDate) {
                 showRow = false;
@@ -378,7 +341,6 @@ function filterTable() {
     }
 }
 
-// Función para resetear los filtros y mostrar todos los datos
 function resetFilters() {
     document.getElementById("searchEjecutivo").value = "";
     document.getElementById("startDate").value = "";
@@ -403,22 +365,18 @@ function cargarReporte(tipo) {
 
             const headerRow = document.getElementById("reporte-header");
             const bodyTable = document.getElementById("reporte-body");
-            
-            // Limpiar la tabla antes de agregar nuevos datos
+
             headerRow.innerHTML = "";
             bodyTable.innerHTML = "";
 
-            // Obtener las claves del primer objeto para definir las columnas
             const columnas = Object.keys(data[0]);
 
-            // Crear las cabeceras de la tabla
             columnas.forEach(col => {
                 const th = document.createElement("th");
                 th.textContent = col.toUpperCase().replace("_", " ");
                 headerRow.appendChild(th);
             });
 
-            // Llenar la tabla con datos
             data.forEach(row => {
                 const tr = document.createElement("tr");
                 columnas.forEach(col => {
@@ -429,7 +387,6 @@ function cargarReporte(tipo) {
                 bodyTable.appendChild(tr);
             });
 
-            // Mostrar la tabla en la página
             document.getElementById("reporte-container").style.display = "block";
         })
         .catch(error => {
@@ -439,7 +396,6 @@ function cargarReporte(tipo) {
 }
 
 
-// Función para abrir el modal y cargar datos
 function abrirModal(reporte) {
     fetch(`reportes.php?reporte=${reporte}`)
         .then(response => response.json())
@@ -500,7 +456,7 @@ function actualizarTabla() {
     $.get("../src/get_viajes.php", function (data) {
         let viajes = JSON.parse(data);
         let tbody = $("table tbody");
-        tbody.empty(); // Limpiar la tabla antes de llenarla
+        tbody.empty();
 
         viajes.forEach((viaje) => {
             let row = `
@@ -549,6 +505,9 @@ function actualizarTabla() {
     });
 }
 
+function initMap() {
+    console.log("✅ Google Maps API cargada correctamente.");
+}
 
 
 

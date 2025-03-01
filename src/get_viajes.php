@@ -1,7 +1,6 @@
 <?php
 include 'db.php';
 
-// Consulta SQL
 $sql = "SELECT * FROM viajes ORDER BY fecha_viaje DESC";
 $result = $conn->query($sql);
 

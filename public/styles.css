@@ -1,17 +1,12 @@
-/* ==========================
-   🌟 MEJORAS EN EL ESTILO 🌟
-   ========================== */
 
-/* ====== ESTILO GENERAL ====== */
 body {
-    background: linear-gradient(180deg, #e3f2fd, #bbdefb, #90caf9) !important; /* Fondo azul claro */
+    background: linear-gradient(180deg, #e3f2fd, #bbdefb, #90caf9) !important; 
     color: #212121;
     font-family: 'Poppins', sans-serif;
-    padding-top: 70px; /* Evita solapamiento con el navbar */
+    padding-top: 70px;
     min-height: 100vh;
 }
 
-/* ====== NAVBAR (Gradiente Negro) ====== */
 .navbar {
     padding: 15px;
     box-shadow: 0px 4px 10px rgba(31, 29, 29, 0.2);
@@ -28,20 +23,18 @@ body {
     color: white !important;
 }
 
-/* ====== FONDO PRINCIPAL (Gradiente Azul) ====== */
 .bg-info.bg-gradiente {
-    background: linear-gradient(135deg, #0560aa, #64b5f6, #2084d6) !important; /* Azul gradiente */
+    background: linear-gradient(135deg, #0560aa, #64b5f6, #2084d6) !important; 
     min-height: 100vh;
 }
 
-/* ====== TÍTULO LISTADO DE VIAJES (Color Negro) ====== */
 h2.listado-viajes {
-    color: #212121 !important; /* Negro */
+    color: #212121 !important; 
     font-size: 2rem;
     font-weight: bold;
 }
 
-/* ====== TABLA ====== */
+
 .table {
     border-radius: 10px;
     overflow: hidden;
@@ -61,7 +54,7 @@ h2.listado-viajes {
     background-color: rgba(66, 165, 245, 0.2);
 }
 
-/* ====== BOTONES ====== */
+
 .btn {
     border-radius: 8px;
     padding: 10px 15px;
@@ -95,7 +88,6 @@ h2.listado-viajes {
     transform: scale(1.05);
 }
 
-/* ====== MODALES ====== */
 .modal-content {
     background: #ffffff !important;
     border-radius: 12px;
@@ -103,127 +95,116 @@ h2.listado-viajes {
     color: #212121 !important;
 }
 
-/* Cabecera del modal */
 .modal-header {
-    background-color: #212121 !important; /* Negro */
+    background-color: #212121 !important; 
     color: #ffffff !important;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
 
-/* Footer del modal - Ahora en color negro */
 .modal-footer {
-    background-color: #212121 !important; /* Negro */
+    background-color: #212121 !important; 
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
 }
 
-/* Ajuste para los títulos */
 .modal-title {
     font-size: 1.5rem;
     font-weight: bold;
     color: #ffffff !important;
 }
 
-/* Botón de cerrar */
 .modal-header .close {
     font-size: 1.5rem;
     color: #ffffff !important;
 }
 
-/* Botón de cerrar en el modal */
 .modal-footer .btn {
-    background-color: #9e1919 !important; /* Rojo oscuro */
+    background-color: #9e1919 !important; 
     border: none;
     color: white;
 }
 
 .modal-footer .btn:hover {
-    background-color: #7a1313 !important; /* Rojo más oscuro al pasar el mouse */
+    background-color: #7a1313 !important; 
 }
 
-/* Navbar */
+
 .navbar {
     background: linear-gradient(135deg, #1a1a1a, #161616);
     color: white;
 }
 
-/* Cambiar el título de "Listado de Viajes" a negro */
 h2 {
     color: black !important;
 }
 
-/* Ajustar posición del menú desplegable */
 .dropdown-menu {
     left: auto !important;
     right: 0 !important;
-    transform: translateX(-30px); /* Mueve el menú más a la izquierda */
+    transform: translateX(-30px); 
 }
 
 
-/* Ajuste para el modal para evitar desbordamiento */
 .modal-dialog {
-    max-width: 90%; /* Ajusta el ancho máximo del modal */
+    max-width: 90%; 
     width: auto;
 }
 
 .modal-body {
-    max-height: 50vh; /* Reducimos la altura del modal */
-    overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
-    overflow-x: auto; /* Permite desplazamiento horizontal para tablas grandes */
+    max-height: 50vh; 
+    overflow-y: auto; 
+    overflow-x: auto; 
     font-size: 1rem;
 }
 
 
-/* Ajuste específico para tablas dentro de los modales */
 .modal-body .table-responsive {
     width: 100%;
-    overflow-x: auto; /* Permitir desplazamiento horizontal en tablas grandes */
+    overflow-x: auto; 
 }
 
-/* Botón flotante en la esquina inferior derecha */
+
 .floating-button {
     position: fixed;
-    bottom: 20px; /* Distancia desde abajo */
-    right: 20px;  /* Distancia desde la derecha */
+    bottom: 20px; 
+    right: 20px;  
     padding: 15px 20px;
     font-size: 18px;
     font-weight: bold;
-    border-radius: 50px; /* Botón redondeado */
+    border-radius: 50px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    z-index: 1050; /* Asegura que esté por encima de otros elementos */
-    background-color: #28a745; /* Color verde */
+    z-index: 1050; 
+    background-color: #28a745; 
     color: white;
     border: none;
     transition: all 0.3s ease-in-out;
 }
 
-/* Efecto al pasar el mouse */
+
 .floating-button:hover {
     transform: scale(1.1);
-    background-color: #218838; /* Verde más oscuro */
+    background-color: #218838; 
 }
 
-/* Asegurar que el botón no se oculte al hacer scroll */
+
 body {
     position: relative;
     min-height: 100vh;
-    padding-bottom: 70px; /* Asegura que el botón no se sobreponga a contenido */
+    padding-bottom: 70px; 
 }
 
-/* Ajustar tamaño del modal de éxito */
 #successModal .modal-dialog {
-    max-width: 400px; /* Reducir el ancho del modal */
+    max-width: 400px; 
 }
 
 #successModal .modal-content {
-    padding: 15px; /* Reducir el relleno interno */
-    font-size: 16px; /* Ajustar tamaño de texto */
+    padding: 15px; 
+    font-size: 16px; 
 }
 
-/* Reducir tamaño del modal de Confirmar Eliminación */
 #confirmDeleteModal .modal-dialog {
-    max-width: 450px; /* Ancho más pequeño */
+    max-width: 450px; 
 }
 
 #confirmDeleteModal .modal-content {
@@ -231,28 +212,26 @@ body {
     font-size: 16px;
 }
 
-/* Reducir tamaño del modal de Editar y Agregar Viaje */
 #viajeModal .modal-dialog {
-    max-width: 600px; /* Reduce el ancho del modal */
+    max-width: 600px; 
 }
 
 #viajeModal .modal-body {
-    max-height: 65vh; /* Ajusta la altura del modal */
-    overflow-y: auto; /* Permite desplazamiento si es necesario */
-    font-size: 16px; /* Tamaño del texto */
+    max-height: 65vh; 
+    overflow-y: auto; 
+    font-size: 16px;
 }
 
-/* ====== ESTILO DEL TÍTULO "LISTADO DE VIAJES" ====== */
 .listado-viajes {
-    font-family: 'Poppins', sans-serif; /* Cambia la tipografía */
-    font-size: 2.2rem; /* Ajusta el tamaño */
-    font-weight: bold; /* Hace que el título sea más grueso */
-    color: #212121; /* Color negro */
-    text-transform: uppercase; /* Convierte el texto en mayúsculas */
-    letter-spacing: 1px; /* Espaciado entre letras */
-    margin-bottom: 20px; /* Espacio inferior */
+    font-family: 'Poppins', sans-serif; 
+    font-size: 2.2rem; 
+    font-weight: bold; 
+    color: #212121; 
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    margin-bottom: 20px; 
 }
 
 .icon-white {
-    filter: invert(1); /* Invierte los colores, útil si el fondo es oscuro */
+    filter: invert(1); 
 }
